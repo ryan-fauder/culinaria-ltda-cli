@@ -1,0 +1,1 @@
+ID; valorTotal; status; {ID_pratos}

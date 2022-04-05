@@ -1,0 +1,4 @@
+7781e7cb-0dfe-4543-b030-766a65c81a68;Lasanha;25.00;Lasanha gostosa
+0a02ada7-aa4f-4d7d-acc1-85e375aa52f1;FishAndChips;8001.00;MuitoBomConfia
+96d680c8-2aa1-4ca6-b994-30b47114f62c;Lasanha de Chicken;25.00;Lasanha gostosa
+1c094468-93ee-423e-a0b8-304827448b7e;Lasanha de Chicken;25.00;Lasanha gostosa
