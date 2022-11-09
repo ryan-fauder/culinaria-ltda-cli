@@ -1,4 +1,8 @@
-7781e7cb-0dfe-4543-b030-766a65c81a68;Lasanha;25.00;Lasanha gostosa
-0a02ada7-aa4f-4d7d-acc1-85e375aa52f1;FishAndChips;8001.00;MuitoBomConfia
-96d680c8-2aa1-4ca6-b994-30b47114f62c;Lasanha de Chicken;25.00;Lasanha gostosa
-1c094468-93ee-423e-a0b8-304827448b7e;Lasanha de Chicken;25.00;Lasanha gostosa
+4e88818b-fe0a-4727-abe8-953e9d9bfa4b;Torta;10.00;Torta de morango
+0164ff59-95d4-43b6-8f21-f0d052db9876;Hamburguer de siri;25.00;Bob
+dbcc978d-54b1-45d9-9246-c7d04a4ac025;Salada de Tofu;23.00;TOfu
+54a48ebf-57d2-48da-82c5-bd7a0ea1a8db;Rocambole de Queijo;35.00;queijo
+38741823-c1dc-48e2-9dee-97dff2a002f5;Tiramisu;15.00;doce
+26e06456-6633-4461-becf-ee0b30fa691c;Baguete;10.00;pao
+4bfc2196-a9b1-4e9a-b4fa-367ba5ff7e33;Brownie;12.00;chocolate
+3c6d178c-0ade-4a8f-940a-fb0c6217ae64;Pastel de cachorro quente;19.00;Jacquin aprovou

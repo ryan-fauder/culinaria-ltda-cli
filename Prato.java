@@ -14,19 +14,22 @@ public class Prato {
 		id = UUID.randomUUID();
 	}
 	
-	public Prato(String nome, double preco, String descricao) {
-		id = UUID.randomUUID();
-		this.nome = nome;
-		this.preco = preco;
-		this.descricao = descricao;
+	public Prato(UUID id, String nome, double preco, 
+				 String descricao) throws InvalidStringException, InvalidPriceException {
+		this.id = id;
+		setNome(nome);
+		setPreco(preco);
+		setDescricao(descricao);
 	}
 	
-	public Prato(UUID id, String nome, double preco, String descricao) {
-		this.id = id;
-		this.nome = nome;
-		this.preco = preco;
-		this.descricao = descricao;
+	public Prato(String nome, double preco, String descricao) 
+				throws InvalidStringException, InvalidPriceException {
+		id = UUID.randomUUID();
+		setNome(nome);
+		setPreco(preco);
+		setDescricao(descricao);
 	}
+	
 	
 	// Getters
 	
@@ -37,9 +40,9 @@ public class Prato {
 	public String getNome() {
 		return nome;
 	}
-	
-	public void setNome(String nome) {
-		this.nome = nome;
+		
+	public String getDescricao() {
+		return descricao;
 	}
 	
 	public double getPreco() {
@@ -48,20 +51,25 @@ public class Prato {
 
 	// Setters
 	
-	public void setPreco(double preco) {
+	public void setPreco(double preco) throws InvalidPriceException {
+		if (preco < 0)
+			throw new InvalidPriceException(preco);
 		this.preco = preco;
 	}
 	
-	public String getDescricao() {
-		return descricao;
+	public void setNome(String nome) throws InvalidStringException {
+		if (nome.contains(";"))
+			throw new InvalidStringException(nome);
+		this.nome = nome;
 	}
 	
-	public void setDescricao(String descricao) {
+	public void setDescricao(String descricao) throws InvalidStringException {
+		if (descricao.contains(";"))
+			throw new InvalidStringException(nome);
 		this.descricao = descricao;
 	}
 
 	// toString
-
 	@Override
 	public String toString() {
 		return "Prato [descricao=" + descricao + ", nome=" + nome + ", preco=" + preco + "]\n";

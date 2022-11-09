@@ -1,19 +1,15 @@
-import java.util.List;
-import java.util.ArrayList;
-
 public class Restaurante {
 	// Attributes
 
-	private String nome, descricao;
-	private int cnpj;
-	private Endereco endereco;
-	private List<Pedido> pedidos = new ArrayList<>();
-	private List<Prato> pratos = new ArrayList<>();
+	private String nome = "Culinaria Ltda.";
+	private String descricao = "Atendendo seu estomago ha mais de 50 anos, mas nao o seu paladar!";
+	private String cnpj = "55.318.925/0001-77";
+	private Endereco endereco = new Endereco("GO", "Goiania", "R-28", 
+											 "Qd 125, Lt 19", "Goiania 2", "74685-610", "42");
 
 	// Constructor
 
-	public Restaurante(){
-			
+	public Restaurante() {
 	}
 
 	// Getters
@@ -26,20 +22,12 @@ public class Restaurante {
 		return descricao;
 	}
 
-	public int getCnpj() {
+	public String getCnpj() {
 		return cnpj;
 	}
 
 	public Endereco getEndereco() {
 		return endereco;
-	}
-
-	public List<Pedido> getPedidos() {
-		return pedidos;
-	}
-
-	public List<Prato> getPratos() {
-		return pratos;
 	}
 
 	// Setters
@@ -52,22 +40,11 @@ public class Restaurante {
 		this.descricao = descricao;
 	}
 
-	public void setCnpj(int cnpj) {
-		this.cnpj = cnpj;
+	public void setCnpj(String cnpj) {
+	  this.cnpj = cnpj;
 	}
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-
-	// Add methods
-	
-	public void addPedido(Pedido pedido){
-		pedidos.add(pedido);
-	}
-	
-	public void addPrato(Prato prato){
-		pratos.add(prato);
-	}
-	
 }

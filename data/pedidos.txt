@@ -1,1 +1,2 @@
-ID; valorTotal; status; {ID_pratos}
+45a14e2e-7244-4874-ba7b-87b7e3320c12;75.00;Concluido;3c6d178c-0ade-4a8f-940a-fb0c6217ae64;3c6d178c-0ade-4a8f-940a-fb0c6217ae64;26e06456-6633-4461-becf-ee0b30fa691c;4bfc2196-a9b1-4e9a-b4fa-367ba5ff7e33;38741823-c1dc-48e2-9dee-97dff2a002f5;
+3f9d79e3-315c-40f2-b86f-b2f9f159ba80;30.00;Realizado;4e88818b-fe0a-4727-abe8-953e9d9bfa4b;4e88818b-fe0a-4727-abe8-953e9d9bfa4b;4e88818b-fe0a-4727-abe8-953e9d9bfa4b;

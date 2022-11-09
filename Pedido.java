@@ -10,11 +10,6 @@ public class Pedido {
 	private String status;
 	private List<Prato> pratos = new ArrayList<>();
 
-	// Realizado (o processamento)
-	// Confirmado (para preparo) 
-	// Encaminhado (ao destino)
-	// Concluído
-
 	// Constructors
 	
 	Pedido() {
@@ -22,10 +17,10 @@ public class Pedido {
 		this.status = "Realizado";
 	}
 
-	Pedido(UUID id, double valorTotal, String status) {
+	Pedido(UUID id, double valorTotal, String status) throws InvalidStringException {
 		this.id = id;
 		this.valorTotal = valorTotal;
-		this.status = status;
+		setStatus(status);
 	}
 
 	// Getters
@@ -48,11 +43,23 @@ public class Pedido {
 
 	// Setters
 	
-	public void setStatus(String status) {
-		this.status = status;
+	public void setStatus(String status) throws InvalidStringException {
+		/* 
+	 	 * Realizado
+		 * Confirmado
+		 * Encaminhado
+		 * Concluido
+		 */ 
+		if (status.equals("Realizado") || status.equals("Confirmado")
+			|| status.equals("Encaminhado") || status.equals("Concluido")) {
+			this.status = status;
+		}
+		else {
+			throw new InvalidStringException(status);
+		}
 	}
 	
-	public void setValorTotal(double valorTotal) {
+	public void setValorTotal() {
 		this.valorTotal = valorTotal;
 	}
 

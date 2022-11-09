@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.UUID;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
@@ -9,9 +11,12 @@ class PedidoDao implements BasicDao<UUID, Pedido> {
 	private BufferedReader reader = null;
 	private PrintWriter writer = null;
 	private Map<UUID, Pedido> pedidos = new LinkedHashMap<>();
+	private ArrayList<Pedido> pedidosList = new ArrayList<>();
+  private static String fileName = "data/pedidos.txt";
 
   private PedidoDao(){
-  }
+		getAll();
+	}
 
   public static PedidoDao getInstance() {
     return instance == null ? new PedidoDao() : instance;
@@ -22,39 +27,63 @@ class PedidoDao implements BasicDao<UUID, Pedido> {
     return Optional.ofNullable(this.pedidos.get(id));
   }
 
+
+  public Optional<Pedido> get(int index) {
+    return Optional.ofNullable(this.pedidosList.get(index));
+  }
+
   @Override
   public Map<UUID, Pedido> getAll() {
 		if (!this.pedidos.isEmpty()) {
 			return this.pedidos;
 		}
-
 		try {
+			boolean resave = false;
 			reader = new BufferedReader(
 						new InputStreamReader(
-							new FileInputStream("data/pedidos.txt")));
+							new FileInputStream(fileName)));
 
 			PratoDao pratoDao = PratoDao.getInstance();
-			pratoDao.getAll();
 
 			String auxString;
 			while ((auxString = reader.readLine()) != null) {
 				// id_pedido; valor_total; status; lista_id_pratos
 				String[] tokens = auxString.split(";", 4);
-			  String[] ids = tokens[4].split(";");
-  
-				Pedido pedido = new Pedido(UUID.fromString(tokens[0]), Double.parseDouble(tokens[1]), tokens[2]);
-        
-				for (String id : ids) {	
-					Prato prato = pratoDao.get(UUID.fromString(id)).get();
-				  pedido.addPrato(prato);
-        }
+			  String[] ids = tokens[3].split(";");
+				Pedido pedido = new Pedido(UUID.fromString(tokens[0]), 0, tokens[2]);
+				
+				if (tokens[3].isEmpty()){
+					resave = true;
+					continue;
+				}
+				
+				for (String id : ids) {
+					Optional<Prato> optional = pratoDao.get(UUID.fromString(id));
+					if(optional.isEmpty()){
+						resave = true;
+						continue;
+					}
+					Prato prato = optional.orElseThrow();
+					pedido.addPrato(prato);
+       	}
 
+				if(pedido.getPratos().isEmpty()) continue;
+				
 				this.pedidos.put(pedido.getId(), pedido);
 			}
+			if(resave) saveAll();
 			
 		}
 		catch (IOException ioException) {
 			ioException.printStackTrace();
+		}
+		catch (NoSuchElementException nseException) {
+		// Algum prato não existe
+			nseException.printStackTrace();
+		}
+		catch (InvalidStringException isException) {
+			// Status inválido (não está dentre os status definidos ou contém ';')
+			isException.printStackTrace();
 		}
 		finally {
 			try { if (reader != null) reader.close(); } 
@@ -65,29 +94,31 @@ class PedidoDao implements BasicDao<UUID, Pedido> {
   }
 
   @Override
-  public void save(Pedido pedido) {
-		if (pedido == null) return;
+  public void save(Pedido pedido){
 		if (pedidos.containsKey(pedido.getId())) return;
 
 		try {
 			writer = new PrintWriter(
 				new OutputStreamWriter(
-					new FileOutputStream("data/pedidos.txt", true)));
+					new FileOutputStream(fileName, true)));
 				
 			// id_pedido; valor_total; status; lista_id_pratos
 			writer.print(pedido.getId().toString() + ";");
 			writer.print(String.format("%.2f", pedido.getValorTotal()) + ";");
 			writer.print(pedido.getStatus() + ";");
-      for (Prato prato : pedido.getPratos()) {
-        writer.print(prato.getId().toString() + ";");
-      }
-      writer.println(); // verificar
+			for (Prato prato : pedido.getPratos()) {
+				writer.print(prato.getId().toString() + ";");
+			}
+     		writer.println();
 
 			pedidos.put(pedido.getId(), pedido);
+			setList();
 		}
 		catch (IOException ioException) {
 			ioException.printStackTrace();
-
+		}
+		catch (NullPointerException npException) {
+			npException.printStackTrace();
 		}
 		finally {
 			try { if (writer != null) writer.close(); }
@@ -101,22 +132,30 @@ class PedidoDao implements BasicDao<UUID, Pedido> {
 		try {
 			writer = new PrintWriter(
 				new OutputStreamWriter(
-					new FileOutputStream("data/pedidos.txt")));
+					new FileOutputStream(fileName)));
 				
 			// id_pedido; valor_total; status; lista_id_pratos
 			for (Pedido pedido : pedidos.values()) {
+				
+				if (pedido == null)
+					throw new NullPointerException();
+				if(pedido.getPratos().size() == 0) continue;
+
 				writer.print(pedido.getId().toString() + ";");
 			  writer.print(String.format("%.2f", pedido.getValorTotal()) + ";");
 		  	writer.print(pedido.getStatus() + ";");
 				for (Prato prato : pedido.getPratos()) {
-          writer.print(prato.getId().toString() + ";");
-        }
-        writer.println(); // verificar
+					writer.print(prato.getId().toString() + ";");
+				}
+        writer.println();
 			}
 		}
 		catch (IOException ioException) {
 			ioException.printStackTrace();
-
+		}
+		catch (NullPointerException npException) {
+			// Objeto "prato" nulo
+			npException.printStackTrace();
 		}
 		finally {
 			try { if (writer != null) writer.close(); }
@@ -126,20 +165,56 @@ class PedidoDao implements BasicDao<UUID, Pedido> {
 
 	@Override
 	public void delete(Pedido pedido) {
-		if (pedido == null) return;
-		this.pedidos.remove(pedido.getId());
-		saveAll();
+		try {
+			this.pedidos.remove(pedido.getId());
+			setList();
+			saveAll();
+		}
+		catch (NullPointerException npException) {
+			// Objeto "pedido" nulo
+			npException.printStackTrace();
+		}
+		catch (Exception exception) {
+			exception.printStackTrace();
+		}
 	}
 
   @Override
   public void update(Pedido pedido) {
-    if (pedido == null) return;
-		this.pedidos.replace(pedido.getId(), pedido);
-		saveAll();
+	  	try {
+			pedidos.replace(pedido.getId(), pedido);
+			setList();
+			saveAll();
+		}
+		catch (NullPointerException npException) {
+			// Objeto "pedido" nulo
+			npException.printStackTrace();
+		}
+		catch (Exception exception) {
+			exception.printStackTrace();
+		}
   }
 
   public Map<UUID, Pedido> getPedidos() {
-		  return pedidos;
+		return pedidos;
   }
 	
+	public ArrayList<Pedido> getList(){
+		if (pedidos.isEmpty()){
+			getAll();
+		}
+		if (pedidosList.isEmpty()) {
+			setList();
+		}
+		return pedidosList;
+	}
+
+	public void setList(){
+		pedidosList = new ArrayList<Pedido>(pedidos.values());
+	}
+
+	public void setMap(Map<UUID, Pedido> map){
+		this.pedidos = map;
+		setList();
+	}
 }
