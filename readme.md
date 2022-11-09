@@ -6,7 +6,7 @@
 
 ```sh
 
-  git clone <>
+  git clone https://github.com/ryan-fauder/culinario-cli
   javac Application.java && java Application
 
 ```
