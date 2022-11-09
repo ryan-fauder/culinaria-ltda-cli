@@ -1,7 +1,9 @@
-# Culinaria LTDA
+# Culinária LTDA
 ~ "Atendendo seu estômago há mais de 50 anos, mas não o seu paladar!"
 
-É um programa CLI que simula a interação entre cliente e restaurante semelhante ao aplicativo de pedido de comida.
+É um programa CLI que simula a interação entre cliente e restaurante semelhante a um aplicativo de pedido de comida.
+O cliente pode realizar pedidos e acompanhar o estado dos pedidos.
+O restaurante pode cadastrar e gerenciar pratos disponíveis, bem como pode gerenciar os pedidos já realizados.
 
 ## Como utilizar?
 
