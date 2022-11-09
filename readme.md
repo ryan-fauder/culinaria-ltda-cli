@@ -1,4 +1,5 @@
-# Culinaria CLI
+# Culinaria LTDA
+~ "Atendendo seu estômago há mais de 50 anos, mas não o seu paladar!"
 
 É um programa CLI que simula a interação entre cliente e restaurante semelhante ao aplicativo de pedido de comida.
 
@@ -6,7 +7,7 @@
 
 ```sh
 
-  git clone https://github.com/ryan-fauder/culinario-cli
+  git clone https://github.com/ryan-fauder/culinaria-ltda-cli
   javac Application.java && java Application
 
 ```
